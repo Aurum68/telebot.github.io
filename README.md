@@ -1,1 +1,16 @@
 # telebot.github.io
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop</title>
+</head>
+<body>
+    <div id="main">
+        <h1>Online shop</h1>
+        <img src="https://yandex.ru/images/search?img_url=https%3A%2F%2Ftoolavto.ru%2Fupload%2Fiblock%2F8f8%2F6n90m6efhuvatdifotjm8wqckf3pqhuk.webp&lr=22&pos=12&rpt=simage&text=3%D0%B4%20%D0%BF%D1%80%D0%B8%D0%BD%D1%82%D0%B5%D1%80">
+        <p>You can buy interesting 3d-printed things in my shop</p>
+        <button id="buy">Buy</button>
+    </div>
+</body>
+</html>
