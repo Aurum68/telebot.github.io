@@ -41,7 +41,7 @@ def bdate_data():
             'CREATE TABLE IF NOT EXISTS bdates (id int auto_increment primary key, name varchar(50), bdate varchar(50))')
         for k, v in bd.items():
             cursor.execute("INSERT INTO bdates (name, bdate) VALUES ('%s', '%s')" % (k, v))
-    elif len(st) > 1 and int(st[-1]) == int(st[-2]):
+    elif len(st) > 1 and int(st[-1]) > int(st[-2]):
         cursor.execute(
             'CREATE TABLE IF NOT EXISTS bdates (id int auto_increment primary key, name varchar(50), bdate varchar(50))')
         for k, v in bd.items():
