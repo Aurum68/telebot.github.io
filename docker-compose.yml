@@ -1,9 +1,0 @@
-version: '3.8'
-
-services:
-  python-app:
-    build: .
-    volumes:
-      - ./bdate.sql:/usr/src/app/bdate.sql
-      - ./PeopleInGroup.txt:/usr/src/app/PeopleInGroup.txt
-    restart: unless-stopped
