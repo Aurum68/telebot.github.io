@@ -1,3 +1,4 @@
+import random
 from datetime import datetime
 import sqlite3
 from threading import Thread
@@ -16,13 +17,41 @@ nums = {"1": "01", "2": "02", "3": "03", "4": "04", "5": "05", "6": "06", "7": "
 logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
+sticker_list = ["CAACAgUAAxkBAAEMDPtmNjTlT9gRjO5j1_hMDkPpE3UqZAACPhsAAvqeaD8PN6Fuagh-_DQE",
+                "CAACAgUAAxkBAAEMDP1mNjTo_o2mR_7ctxbL2SKr8yoOUwACPxsAAvqeaD9f1BdyJKBlXzQE",
+                "CAACAgUAAxkBAAEMDP5mNjToRm-5zVuVBc_0Uwkr63NXmAACQBsAAvqeaD84HJobXCgQzzQE",
+                "CAACAgUAAxkBAAEMDQFmNjTumzuQpQpcSAIrgrUpQruA2gACQRsAAvqeaD8Mju0iCj8iSjQE",
+                "CAACAgUAAxkBAAEMDQJmNjTvqNHspfqi8Rfw3K6kNFeS_wACQhsAAvqeaD8I6YaX2mhf6zQE",
+                "CAACAgUAAxkBAAEMDQNmNjTwHUGOUkeSsMZDK1goRCSmWQACQxsAAvqeaD9s98xIyIJnmDQE",
+                "CAACAgUAAxkBAAEMDQRmNjTxO1YSu_S1WEcS1S-H_umgHAACRBsAAvqeaD8M1gM-ZS5j8TQE",
+                "CAACAgUAAxkBAAEMDQZmNjTyWLrnX23QtzQQj3xSdioXYwACRRsAAvqeaD8r0mXtx-FzFDQE",
+                "CAACAgUAAxkBAAEMDQdmNjTyDYAeCvtfNuq4rtMsoN6RoQACRhsAAvqeaD-skOaQzgzmVjQE",
+                "CAACAgUAAxkBAAEMDQlmNjT0s7Khd_aP_S549zg8uSoqoQACRxsAAvqeaD_T_tRZPqzphzQE",
+                "CAACAgUAAxkBAAEMDQtmNjT2qPqIcWi2HBMwkiapH_LKjQACSBsAAvqeaD9hIQjWSU2zTDQE",
+                "CAACAgUAAxkBAAEMDQxmNjT2fK5KbjFm0zD_vB9jJL9RLwACSRsAAvqeaD_mWAAB0jgX1xo0BA",
+                "CAACAgUAAxkBAAEMDQ1mNjT4D0e5i96qedFNAvnhQu5AUwACSxsAAvqeaD8mNMGSrUP2iDQE",
+                "CAACAgUAAxkBAAEMDQ5mNjT4Si_wHf36gG-BVN1L97c6TgACShsAAvqeaD974LtFcLKoGjQE",
+                "CAACAgUAAxkBAAEMDRBmNjT5442EnZUkxj5n37XhWpm9-wACTBsAAvqeaD8j0Nw6CSUpazQE",
+                "CAACAgUAAxkBAAEMDRFmNjT79hO1nHONBN7kTsNiag_ZngACTRsAAvqeaD9JVrCBEUOvHzQE",
+                "CAACAgUAAxkBAAEMDRJmNjT7f0OvdoTObWRK4J-zCWg13AACThsAAvqeaD_zEQI3_e8bkTQE",
+                "CAACAgUAAxkBAAEMDRNmNjT8Zu9D-3iFTDnfGlxYI4zhawACTxsAAvqeaD_QQnWqckYf6TQE",
+                "CAACAgUAAxkBAAEMDRVmNjT-XNCNTY_MHRVf0VNBWrbjrwACURsAAvqeaD-X2dYZJTvozzQE",
+                "CAACAgUAAxkBAAEMDRZmNjT-UR0HwXBJsg4golU7FduiFQACUBsAAvqeaD97XBX-zApT4zQE",
+                "CAACAgUAAxkBAAEMDRdmNjT_NOTBsjAqBq-iLbkPHjtHQgACUhsAAvqeaD99vVqD26y5xDQE",
+                "CAACAgUAAxkBAAEMDRlmNjT_pMxEBEmejvog9b5ORbQvkQACUxsAAvqeaD_BK2ggEtqGOzQE",
+                "CAACAgUAAxkBAAEMDRpmNjUAAeJM8EENm4O6yBMYNF80NaEAAlQbAAL6nmg_0oPdMgEcMPw0BA",
+                "CAACAgUAAxkBAAEMDRtmNjUBbKot_Ufy0ymnMVO2PA4NrgACVRsAAvqeaD87WBPVmwQpWDQE",
+                "CAACAgIAAxkBAAEMDO1mNjNIRgNhn3UqInr1SWowXaROHAACiwIAAladvQr3tGImDY878zQE",
+                "CAACAgIAAxkBAAEMDPNmNjQmMDaZ-9YmZzJJVwWPmVvMPQACNgADMhhBJgijPPkh5sryNAQ"
+                ]
+
 
 def get_bdate() -> dict:
-    file = open("PeopleInGroup.txt", 'a')
+    #file = open("PeopleInGroup.txt", 'a')
     bd = {}
     vk_session = vk_api.VkApi(token=VK_BOT_TOKEN)
     data = vk_session.method('messages.getChatUsers', dict(chat_id=36, fields="bdate", name_case="gen"))
-    file.write(str(len(data)) + '\n')
+    #file.write(str(len(data)) + '\n')
     for i in data:
         if "bdate" in i:
             n = i["bdate"].split(".")
@@ -42,20 +71,22 @@ def update_bdate_data():
     bd = get_bdate()
     conn = sqlite3.connect('bdate.sql')
     cursor = conn.cursor()
-    file = open("PeopleInGroup.txt")
-    st = file.readlines()
-    if len(st) == 1:
-        cursor.execute(
-            'CREATE TABLE IF NOT EXISTS bdates (id int auto_increment primary key, name varchar(50), bdate varchar(50))')
-        for k, v in bd.items():
-            cursor.execute("INSERT INTO bdates (name, bdate) VALUES ('%s', '%s')" % (k, v))
-    elif len(st) > 1 and int(st[-1]) > int(st[-2]):
-        cursor.execute(
-            'CREATE TABLE IF NOT EXISTS bdates (id int auto_increment primary key, name varchar(50), bdate varchar(50))')
-        for k, v in bd.items():
-            for n in cursor.fetchall():
-                if k not in n:
-                    cursor.execute("INSERT INTO bdates (name, bdate) VALUES ('%s', '%s')" % (k, v))
+    cursor.execute(
+        'CREATE TABLE IF NOT EXISTS bdates (id int auto_increment primary key, name varchar(50), bdate varchar(50))')
+    people = cursor.execute("SELECT * FROM bdates").fetchall()
+    for k, v in bd.items():
+        for person in people:
+            if k not in person:
+                cursor.execute("INSERT INTO bdates (name, bdate) VALUES ('%s', '%s')" % (k, v))
+
+
+    # elif len(st) > 1 and int(st[-1]) > int(st[-2]):
+    #     cursor.execute(
+    #         'CREATE TABLE IF NOT EXISTS bdates (id int auto_increment primary key, name varchar(50), bdate varchar(50))')
+    #     for k, v in bd.items():
+    #         for n in cursor.fetchall():
+    #             if k not in n:
+    #                 cursor.execute("INSERT INTO bdates (name, bdate) VALUES ('%s', '%s')" % (k, v))
 
     conn.commit()
     cursor.close()
@@ -82,6 +113,7 @@ def birthday_bot_event():
                 if person[2] != "":
                     if datetime.now().strftime("%d.%m") == person[2]:
                         bot.send_message(CHAT_ID, f"Сегодня день рождения у {person[1]}!")
+                        bot.send_sticker(CHAT_ID, sticker_list[random.randint(0, len(sticker_list) - 1)])
                         i += 1
             log.info(i)
         if datetime.now().strftime("%d.%m") == now_date:
