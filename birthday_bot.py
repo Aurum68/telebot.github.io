@@ -74,10 +74,14 @@ def update_bdate_data():
     cursor.execute(
         'CREATE TABLE IF NOT EXISTS bdates (id int auto_increment primary key, name varchar(50), bdate varchar(50))')
     people = cursor.execute("SELECT * FROM bdates").fetchall()
-    for k, v in bd.items():
-        for person in people:
-            if k not in person:
-                cursor.execute("INSERT INTO bdates (name, bdate) VALUES ('%s', '%s')" % (k, v))
+    if len(people) == 0:
+        for k, v in bd.items():
+            cursor.execute("INSERT INTO bdates (name, bdate) VALUES ('%s', '%s')" % (k, v))
+    else:
+        for k, v in bd.items():
+            for person in people:
+                if k not in person:
+                    cursor.execute("INSERT INTO bdates (name, bdate) VALUES ('%s', '%s')" % (k, v))
 
 
     # elif len(st) > 1 and int(st[-1]) > int(st[-2]):
